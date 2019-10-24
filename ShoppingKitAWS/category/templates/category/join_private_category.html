@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Search For a Private Category to Join</h1>
+    
+    <form method="GET" action="" id="searchform">
+        <input class="searchfield" id="searchbox" name="q" type="text" value="{{ request.GET.q }}" placeholder="Search..."/>
+        <input type="submit"/>
+    </form>
+    <h6>Please enter the exact name.</h6>
+    <br>
+    <hr>
+    <br>
+    <h2>Relevent Categories:</h2>
+    {% for all in searchquery %} 
+
+    <h3><a href="{% url 'category:private_category_view' all.id %}">{{ all }}</a></h3>
+        
+    {% empty %}
+        <h4>No relevent search...</h4>
+
+
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}

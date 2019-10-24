@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+<h1> Create a Private Category </h1>
+<form id="post_form" method="post" action="" enctype="multipart/form-data" autocomplete="nope">
+    
+
+    {% csrf_token %} 
+    
+     
+    <input type="password" style="display:none" autocomplete="new-password" >
+    
+    
+    {{ privateCategoryForm.title }}
+    <br>
+    {{ privateCategoryForm.description }}
+    <br>
+    {{ privateCategoryForm.image }}
+    <br>
+    <h5 style="color:red; text-decoration:none;list-style-type: none"><strong>{{ privateCategoryForm.non_field_errors }}</strong></h5>
+    {{ privateCategoryForm.category_password }}
+    <br><br>
+    {{ privateCategoryForm.confirm_password }}
+     
+    <br/>
+    
+    <button class="btn-success btn-lg" style="margin-left:25%;" type="submit" name="submit" value="Submit">Submit</button>
+</form>
+
+
+
+</div>
+
+{% block javascript %} 
+
+<script type=text/javascript src="{% static 'accounts/jquery-1.11.1.min.js' %}"></script> 
+  
+<script>
+
+$('#post_form').disableAutoFill();
+
+</script>
+
+{% endblock %}
+
+{% endblock %}

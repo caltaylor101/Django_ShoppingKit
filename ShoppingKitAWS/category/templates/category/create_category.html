@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+<h1> Create a Category </h1>
+<form id="post_form" method="post" action="" enctype="multipart/form-data">
+
+    {% csrf_token %} 
+    
+    {% for field in categoryForm %}
+        
+        <p>{{ field }}</p>
+                
+            
+
+
+    {% endfor %}
+     
+    <br/>
+    
+    <button class="btn-success btn-lg" type="submit" name="submit" value="Submit">Submit</button>
+</form>
+
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+
+{% block body %}
+
+<div class="container">
+    <h1>Enter the password for the category: <strong>{{ private_category }}</strong></h1>
+    <form method="GET" id="login">
+        <input id="q" name="q" type="password" value="{{ request.GET.q }}" placeholder="password..."/>
+        <input type="submit"/>
+    </form>
+</div>
+
+
+
+
+{% endblock %}

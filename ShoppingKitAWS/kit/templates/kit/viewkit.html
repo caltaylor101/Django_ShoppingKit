@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+{% load comments %}
+{% load static %}
+{% load tz %}
+
+
+{% block body %}
+
+
+<div class="container">
+    <br/>
+    <nav aria-label="breadcrumb">
+   <ol class="breadcrumb">
+     <li class="breadcrumb-item"><a href="{% url 'home:homepage' %}">Home</a></li>
+     <li class="breadcrumb-item"><a href="{% url 'category:browse_categories' %}">Browse Categories</a></li>
+     {% if post.category.id %}
+     <li class="breadcrumb-item"><a href="{% url 'category:category_view' post.category.id %}">{{ post.category }}</a></li>
+     {% endif %}
+     <li class="breadcrumb-item active" aria-current="page">{{ post.title }}</li>
+   </ol>
+ </nav>
+
+
+<!-- loops through the images the user submits -->
+{% for images in album %}
+<!-- takes the first image to be used as the main photo -->
+{% if images is album.0 %}
+
+<div class="row" style="width:100%;">
+
+    
+
+
+    
+    
+    <div style="float:left; width:3%" >
+        
+        <input type="image" class="img-responsive" id="upvote_post" src='{% static "accounts/Site_Images/upvote.png" %}' name="{{ identifier }}" value="upvote" style="width:100%;">
+        <div>&nbsp;&nbsp;<span style="font-size:2vw;" id="post_vote_score">{{post.vote_score}}</span></div>
+        <input type="image" class="img-responsive" id="downvote_post" src='{% static "accounts/Site_Images/downvote.png" %}' name="{{ identifier }}" value="downvote" style="margin-top:5px;width:100%;">
+    </div>
+
+    <h2 style="font-size:4vw;float:left"> &nbsp;&nbsp;{{ post.title }}</h2>
+    
+    <div style="clear:both;"></div>
+    <h4 style="margin-left:4%"> Posted by: <a href="{% url 'accounts:view_profile_with_pk' post.user.id %}"> {{ post.user }} </a></h4>
+    <br>
+
+       <div class="col-xs-11 col-sm-11 col-md-5 col-lg-5">
+            <!-- post was found from the variable in the view-->
+            <div class="item"> 
+                <img class="img-responsive center-block" style="border:2px solid #b0b6bf" src="{{ post.image.url }}" alt="thumb">
+            </div>
+            
+       </div> 
+
+    
+
+       <div class="col-md-7 col-lg-7 col-sm-12 col-xs-12" style="float:right; padding-top: 1%;">
+
+            <a href="{{ images.product_url }}">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <img class="img-responsive " src="{{ images.image.url }}" alt="thumbnail">
+                </div>
+            </a>
+            
+            <div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
+                <p style="font-size: 1.5em;">{{images.title}}</p>
+                <p>{{images.body}} </p>
+            </div>
+            
+        </div>
+    
+
+{% elif images is album.3 %}
+<div class="col-lg-5 col-md-5 hidden-sm hidden-xs" style="float:left;"> 
+        
+        <h2 class="text-center">Purchasing Options</h2>
+        
+            <div style="width:38%;margin:0 auto;">
+        
+                <div style="float:left; padding:20px;">
+                    <img class="img-responsive" src="images/50x107.jpg" alt="thumbnail">
+                    <button class="bg-success" style="margin-top:5px;">See Cart Here</button>
+                </div>	
+        
+                <div style="float:left; padding:20px;">
+                    <img class="img-responsive" src="images/50x107.jpg" alt="thumbnail">
+                    <button class="bg-success" style="margin-top:5px;">See Cart Here</button>
+                </div>	
+        
+                <div style="float:left; padding:20px;">
+                    <img class="img-responsive" src="images/50x107.jpg" alt="thumbnail">
+                    <button class="bg-success" style="margin-top:5px;">See Cart Here</button>
+                </div>	
+            </div>
+        
+        </div>
+        <div class="col-md-7 col-lg-7 col-sm-12 col-xs-12" style="float:right; padding-top: 1%;">
+
+            <a href="{{ images.product_url }}">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <img class="img-responsive " src="{{ images.image.url }}" alt="thumbnail">
+                </div>
+            </a>
+            
+            <div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
+                <p style="font-size: 1.5em;">{{images.title}}</p>
+                <p>{{images.body}} </p>
+            </div>
+            
+        </div>
+
+       
+{% else %}     
+         
+    
+        <div class="col-md-7 col-lg-7 col-sm-12 col-xs-12" style="float:right; padding-top: 1%;">
+
+            <a href="{{ images.product_url }}">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <img class="img-responsive " src="{{ images.image.url }}" alt="thumbnail">
+                </div>
+            </a>
+
+            <div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
+                <p style="font-size: 1.5em;">{{images.title}}</p>
+                <p>{{images.body}} </p>
+            </div>
+
+        </div>
+    
+        
+         
+        
+{% endif %}
+{% endfor %}
+
+<!-- might be buggy because there is another ending div below, but when changed it doesn't work correctly-->
+{% if album|length <= 3 %}
+<div style="clear:both;"></div>
+<div class="col-lg-5 col-md-5 hidden-sm hidden-xs" style="float:left;"> 
+        
+        <h2 class="text-center">Purchasing Options</h2>
+        
+        <div style="width:38%;margin:0 auto;">
+    
+            <div style="float:left; padding:20px;">
+                <img class="img-responsive" src="images/50x107.jpg" alt="thumbnail">
+                <button class="bg-success" style="margin-top:5px;">See Cart Here</button>
+            </div>	
+    
+            <div style="float:left; padding:20px;">
+                <img class="img-responsive" src="images/50x107.jpg" alt="thumbnail">
+                <button class="bg-success" style="margin-top:5px;">See Cart Here</button>
+            </div>	
+    
+            <div style="float:left; padding:20px;">
+                <img class="img-responsive" src="images/50x107.jpg" alt="thumbnail">
+                <button class="bg-success" style="margin-top:5px;">See Cart Here</button>
+            </div>	
+        </div>
+        
+</div>
+
+      
+{% endif %}
+         
+ 
+</div> <!-- ending container div -->
+
+
+
+ <div class="col-xs-12  col-sm-12 hidden-md hidden-lg" style="float:left;"> 
+         
+ 
+ <h2 class="text-center">Purchasing Options</h2>
+ 
+     
+ 
+         <div class="col-sm-3 col-sm-offset-2 col-xs-3 col-xs-offset-2" >
+             <img class="img-responsive" src="images/50x107.jpg" alt="thumbnail">
+             <button class="bg-success" style="margin-top:5px;">See Cart Here</button>
+         </div>	
+ 
+         <div class="col-sm-3  col-xs-3" >
+             <img class="img-responsive" src="images/50x107.jpg" alt="thumbnail">
+             <button class="bg-success" style="margin-top:5px;">See Cart Here</button>
+         </div>	
+ 
+         <div class="col-sm-3  col-xs-3" >
+             <img class="img-responsive" src="images/50x107.jpg" alt="thumbnail">
+             <button class="bg-success" style="margin-top:5px;">See Cart Here</button>
+         </div>	
+     
+ 
+ </div>	
+        
+         
+         
+         
+         
+         
+             
+
+ </div> <!-- This container ends the row. If changed this is buggy-->
+
+ 
+ <!-- enter code for comments down below -->
+
+
+ <div class="container"> 
+ 
+ <hr>
+
+
+ <!-- model name must be lowercase -->
+ 
+ {% get_comment_count for kit.kitpost identifier as comment_count %}
+ <p>{{ comment_count }} comments have been posted.</p>
+
+ {% get_comment_list for kit.kitpost identifier as comment_list %}
+ 
+ 
+ 
+ {% get_comment_form for kit.kitpost identifier as form %}
+ 
+     <!-- this form action will always be used like this for comments -->
+     <form action="{% comment_form_target %}" method="POST"> 
+         {% csrf_token %} 
+         
+        <div>
+            <p>{{ form.title }} </p>
+            <p>{{ form.comment }}</p>
+        </div>
+         
+             
+         
+         {{ form.honeypot }}
+         {{ form.content_type }}
+         {{ form.object_pk }}
+         {{ form.timestamp }}
+         {{ form.security_hash }}
+         
+         <input type="hidden" name="next" value="{% url 'create-kit:viewkit_with_pk' identifier %}" />
+         <input type="submit" value="Add comment" id="id_submit" />
+ 
+     </form>
+
+
+<!-- dropdown menu for comment order -->
+
+<div class="dropdown">
+    <span style="font-size: 1.5em;float:left;"> Sort -</span>
+    <li class="dropdown" style="list-style-type:none; font-size:1.5em; float:left;"> <a href="#" aria-labelledby="dropdownMenu2" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true"> &nbsp;<strong>Top</strong><span class="caret"></span></a>
+        
+        <ul class="dropdown-menu">
+            
+          <li style="font-size:1.2em;"><input type="submit" id="newest" value="newest" name="newest" >Newest </li>
+          <li style="font-size:1.2em;"><a href="#">Oldest</a> </li>
+          <li style="font-size:1.2em;"><a href="#">Worst</a> </li>
+        </ul>
+      </li>
+</div>
+ 
+     
+
+
+
+
+<div style="clear:both"></div>
+{% for comment in comment_list %}
+    <div class="container" style="background-color:#ECECEC;">
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+
+            
+                
+
+            <input type="image" class="upvote" src='{% static "accounts/Site_Images/upvote.png" %}' name="{{ comment.id }}" value="upvote" style="width:25%;">
+            <div>&nbsp;{{comment.vote_score}}</div>
+            <input type="image" class="img-responsive downvote" src='{% static "accounts/Site_Images/downvote.png" %}' name="{{ comment.id }}" value="downvote" style="margin-top:5px;width:25%;">
+            
+        </div>
+
+
+            <br><br>
+
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7"> 
+
+        {{ comment.title }}
+
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"> 
+        <p style="float:right;color: #3668DB">Posted by: <strong>{{ comment.user }}</strong> on  {{ comment.submit_date|localtime }} </p>
+        </div>
+
+        
+
+        <br> 
+
+        <hr style="border-bottom:3px solid black;margin-bottom:0;">
+        <br>
+
+        <p style="padding:10px;">{{ comment.comment }}</p>
+        
+        
+    </div>
+
+    <br>
+{% endfor %}
+
+
+
+ 
+
+ </div> <!-- This is the container end div -->
+
+ <!-- This javascript is a temporary solution until an Ajax solution is created -->
+ <!-- Jquery must be called here and I'm not sure why it doesn't work if it isn't called here. -->
+{% block javascript %}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script type=text/javascript src="{% static 'accounts/jquery-1.11.1.min.js' %}"></script> 
+
+<script>
+$('.upvote').click(function() {
+ $.ajax({
+     type: "POST",
+     url: "{% url 'create-kit:upvote' %}", 
+     data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+     
+     
+ });
+ window.setTimeout(function () {
+ location.href = "{% url 'create-kit:viewkit_with_pk' pk=identifier %}";
+ }, 1000);
+
+ if ($(this).attr("src", "{% static 'accounts/Site_Images/upvote.png' %}")) {
+     $(this).attr("src", "{% static 'accounts/Site_Images/downvote.png' %}");
+ }
+
+});
+
+
+$('#newest').click(function() {
+ $.ajax({
+     type: "POST",
+     url: "{% url 'create-kit:sort_comments' %}", 
+     data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+     
+     
+ });
+
+ window.setTimeout(function () {
+ location.href = "{% url 'create-kit:viewkit_with_pk' pk=identifier %}";
+ }, 1000);
+
+});
+
+
+
+
+$('.downvote').click(function() {
+    $.ajax({
+        type: "POST",
+        url:"{% url 'create-kit:downvote' %}", 
+        data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+    });
+
+    window.setTimeout(function () {
+        location.href = "{% url 'create-kit:viewkit_with_pk' pk=identifier %}";
+    }, 1000)
+
+
+})
+
+
+
+$('#upvote_post').click(function() {
+    $.ajax({
+        type: "POST",
+        url:"{% url 'create-kit:upvote_post' %}", 
+        data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+    });
+
+    window.setTimeout(function () {
+        location.href = "{% url 'create-kit:viewkit_with_pk' pk=identifier %}";
+    }, 1000)
+
+
+})
+
+$('#downvote_post').click(function() {
+    $.ajax({
+        type: "POST",
+        url:"{% url 'create-kit:downvote_post' %}", 
+        data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        
+            
+    });
+    
+    window.setTimeout(function () {
+        location.href = "{% url 'create-kit:viewkit_with_pk' pk=identifier %}";
+    }, 1000)
+    
+
+
+})
+
+
+
+</script>
+{% endblock %}
+
+
+
+
+{% endblock %}

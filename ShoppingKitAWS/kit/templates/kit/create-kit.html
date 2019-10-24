@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container"> 
+
+
+<form id="post_form" method="post" action="" enctype="multipart/form-data">
+
+    {% csrf_token %} 
+    {% for hidden in postForm.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    
+
+
+    
+    
+
+    
+
+    <h2>Select a Category for your Kit:</h2>
+    
+    <h3> Public Category </h3>
+    <h4>{{ postForm.category }}</h4>
+    <a href="{% url 'category:category' %}"><span style="font-size: .9vw;"><strong>Create a Category Here</strong></span></a>
+    <div style="clear:both"></div>
+
+    <div class="col-lg-6 col-6-md col-6-sm" style="padding:0;">
+        <h3> Your Private Categories </h3>
+        <h4>{{ postForm.private_category }}</h4>
+        <a href="{% url 'category:private_category' %}"><span style="font-size: .9vw;"><strong>Create a Private Category Here</strong></span></a>
+    </div>
+
+    <div class="col-lg-6 col-6-md col-6-sm">
+        <h3> Your Joined Private Categories </h3>
+        <h4>{{ postForm.private_category2 }}</h4>
+        <a href="{% url 'category:join_private_category' %}"><span style="font-size: .9vw;"><strong>Join a Private Category Here</strong></span></a>
+    </div>
+
+    
+    
+    
+
+    <h2>Name and Describe Your Kit:</h2>
+    {{ postForm.title }}
+
+    {{ postForm.body }}
+
+    <h2>Upload Main Image:</h2>
+    {{ postForm.image }}
+
+    
+
+
+
+    
+    
+
+    
+    <br/>
+    {{ formset.management_form }}
+    <h1>List the Products Below: </h1>
+    <!--for each image set by extra variable -->
+    <!-- may need to be reversed -->
+    {% for form in formset reversed%}
+        {% if forloop.first is True %}
+                
+            {{form}}
+            
+        {% else %}
+        <br/><br/><br/>
+        
+        {{ form }}
+        {% endif %}
+        <!-- loops the form so each has a description -->
+        
+    {% endfor %}
+    <input type='hidden' value='Hello' name='id'>
+    <button class="btn-success btn-lg" style="margin-left:25%;" type="submit" name="submit" value="Submit">Submit</button>
+</form>
+<br/><br/><br/><br/><br/><br/><br/>
+</div>
+
+
+{% endblock %}
+
+

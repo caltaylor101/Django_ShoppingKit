@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+
+{% block body %}
+<div class="container">
+    <br>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home:homepage' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'category:browse_categories' %}">Categories</a></li>
+      <li class="breadcrumb-item active" aria-current="page"> {{ category }}</li>
+      
+    </ol>
+         
+     
+         
+  </nav>
+      
+      <h1>{{ category.title }}</h1>
+      <h5>Category Owner: <a href='{% url "accounts:view_profile_with_pk" pk=category.owner.id %}'>{{category.owner}}</a></h5>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          
+            
+            
+              <div class="item"> <img class="img-responsive" src="{% static 'accounts/featured/featured.jpg' %}" alt="thumb">
+                <div class="carousel-caption" style="font-size: 3vw;">Featured Kit</div>
+              </div>
+              
+            
+           
+        </div>
+  </div>
+    
+    </div>
+  
+  <hr>
+  <h2 class="text-center">Trending Kits</h2>
+  
+      <div class="container">
+          <div style="margin-left:10%;">
+          <span style="font-size:1.5em;float:right; margin-right:10%;"> <a href="{% url 'create-kit:create-kit' %}"><strong>Create Post</strong></a> </span>
+          <img class="img-responsive" src="images/post-icon.png" alt="down arrow icon" style="width:2%;float:left; margin-left:5px;">
+          </div>
+      </div>
+  
+  
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+         <span style="font-size: 1.5em;float:left;"> Sort -</span> 
+          <span style="font-size: 1.5em;float:left;"> <a><strong>Top</strong></a> </span>
+         <img class="img-responsive" src="images/down-menu-icon.png" alt="down arrow icon" style="width:10%;float:left;margin-top: 10px; margin-left:5px;">
+      </div>
+  
+  
+  <hr>
+  <div style="clear:both;"></div>
+  <div class="container">
+    
+
+      {% for kitpost in post %}
+      <div class="row text-center">
+          <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                <input type="image" class="upvote_post" src='{% static "accounts/Site_Images/upvote.png" %}' name="{{ kitpost.id }}" value="upvote" style="width:100%;">
+                
+                <span style="font-size: 1.5em;"> {{ kitpost.vote_score }} </span>
+                <input type="image" class="downvote_post" src='{% static "accounts/Site_Images/downvote.png" %}' name="{{ kitpost.id }}" value="downvote" style="width:100%;">
+                
+              
+          </div>
+
+      
+          <a href="{% url 'create-kit:viewkit_with_pk' kitpost.id %}">
+          <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+            <div class="thumbnail"> <img src="{{ kitpost.image.url }}" alt="Thumbnail Image 1" class="img-responsive" style="width:65%">
+              
+            </div>
+          </div>
+          </a>
+
+
+
+          <div class="col-sm-8 col-md-8 col-lg-7 col-xs-8">
+              <h2 style="text-align: left;"> {{ kitpost.title }} </h2>
+              <br><br>
+              <p style="text-align: left;">{{ kitpost.body }}</p>
+          </div>
+      
+      </div>
+      {% endfor %}
+
+
+    
+    
+    
+    
+  </div>
+  <hr>
+  
+  <hr>
+
+  {% block javascript %}
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+  <script type=text/javascript src="{% static 'accounts/jquery-1.11.1.min.js' %}"></script> 
+  
+  <script>
+  
+  
+  
+  
+  $('.upvote_post').click(function() {
+      $.ajax({
+          type: "POST",
+          url:"{% url 'create-kit:upvote_post' %}", 
+          data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+      });
+  
+      window.setTimeout(function () {
+          location.href = "{% url 'category:private_category_view' pk=pk %}";
+      }, 1000)
+  
+  
+  })
+  
+  $('.downvote_post').click(function() {
+      $.ajax({
+          type: "POST",
+          url:"{% url 'create-kit:downvote_post' %}", 
+          data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+          
+              
+      });
+      
+      window.setTimeout(function () {
+          location.href = "{% url 'category:private_category_view' pk=pk %}";
+      }, 1000)
+      
+  
+  
+  })
+  
+  
+  
+  </script>
+  {% endblock %}
+
+  {% endblock %}

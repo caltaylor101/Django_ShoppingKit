@@ -1,0 +1,71 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block body %}
+<h1>Hello</h1>
+
+{% load comments %} 
+{% get_comment_count for kit.testcomment test as comment_count %}
+<p>{{ comment_count }} comments have been posted</p>
+
+{% get_comment_list for kit.testcomment test as comment_list %}
+{% for comment in comment_list %}
+<p>Posted by: {{ comment.user }} on {{ comment.submit_date }}</p>
+<p>Title: {{ comment.title }}</p>
+<p>Comment: {{ comment.comment }}</p>
+
+<p>Vote:</p>
+<input type="image" class="upvote" src="{% static 'accounts/Site_Images/upvote.png' %}" name="{{ comment.id }}" value="upvote" style="width:5%;">
+
+
+<p>Number of Votes: {{ comment.vote_score }}</p>
+{% endfor %}
+
+{% get_comment_form for kit.testcomment test as form %}
+
+<table>
+    <form action="{% comment_form_target %}" method="post">
+        {% csrf_token %} 
+        {{ form.honeypot }}
+        {{ form.content_type }}
+        {{ form.object_pk }}
+        {{ form.timestamp }}
+        {{ form.security_hash }}
+
+        <p>Enter a title: </p>{{ form.title }}
+        <p>Title</p> {{form.title}}
+        <p>Comment:</p> {{form.comment}}
+        <input type="submit" name="submit" value="Post"> 
+        <input typle="submit" name="preview" value="Preview"> 
+
+    </form> 
+</table> 
+
+{% block javascript %}
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script type=text/javascript src="{% static 'accounts/jquery-1.11.1.min.js' %}"></script> 
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script type=text/javascript src="{% static 'accounts/bootstrap.min.js' %}"></script>
+
+<script>
+    $('.upvote').click(function() {
+        $.ajax({
+            type: "POST",
+            url: "{% url 'create-kit:upvote' %}", 
+            data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            
+            
+        });
+        window.setTimeout(function () {
+        location.href = "{% url 'create-kit:testingcomments_with_id' id=test %}";
+        }, 1000);
+
+        if ($(this).attr("src", "{% static 'accounts/Site_Images/upvote.png' %}")) {
+            $(this).attr("src", "{% static 'accounts/Site_Images/downvote.png' %}");
+        }
+
+    });
+</script>
+{% endblock %}
+
+{% endblock %}
