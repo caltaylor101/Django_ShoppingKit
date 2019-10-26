@@ -1,0 +1,22 @@
+container_commands:
+  01_migrate:
+    command: "source /opt/python/run/venv/bin/activate && python manage.py migrate --noinput"
+    leader_only: true
+  02_createsu:
+    command: "source /opt/python/run/venv/bin/activate && python manage.py createsu"
+    leader_only: true
+  03_collectstatic:
+    command: "source /opt/python/run/venv/bin/activate && python manage.py collectstatic --noinput"
+
+option_settings:
+  "aws:elasticbeanstalk:application:environment":
+    DJANGO_SETTINGS_MODULE: "ShoppingKitAWS.settings"
+    PYTHONPATH: "$PYTHONPATH"
+  "aws:elasticbeanstalk:container:python":
+    WSGIPath: "ShoppingKitAWS/wsgi.py"
+  "aws:elasticbeanstalk:container:python:staticfiles":
+    "/static": "static/"
+
+packages:
+  yum:
+    postgresql96-devel: []

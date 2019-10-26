@@ -6774,10 +6774,10 @@ button.close {
 }
 @-webkit-keyframes glow {
   from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e60073, 0 0 20px #e60073, 0 0 25px #e60073, 0 0 30px #e60073, 0 0 35px #e60073;
   }
   to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #f7ff59, 0 0 40px #f7ff59, 0 0 50px #ff4da6, 0 0 60px #f7ff59, 0 0 70px #f7ff59, 0 0 80px #f7ff59;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e60073, 0 0 20px #e60073, 0 0 25px #e60073, 0 0 30px #e60073, 0 0 35px #e60073;
   }
 }
 

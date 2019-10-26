@@ -26,12 +26,13 @@ SECRET_KEY = '^32_o@(28p20)-3v9rweds!0otqa*d#p7)ps%@wp87v4uawcm2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ShoppingKitAWS.zsfatvib59.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['ShoppingKitAWS.zsfatvib59.us-west-2.elasticbeanstalk.com', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'storages',
     'imagekit',
     'category',
     'vote',
@@ -145,16 +146,20 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR,'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'ShoppingKitAWS/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'final/media')
 
 LOGIN_REDIRECT_URL = '/home'
 
 LOGIN_URL = '/accounts/login'
 
+AWS_S3_OBJECT_PARAMETERS = {
+    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    'CacheControl': 'max-age=94608000',
+}
 
 
 #Email test server variables
@@ -164,3 +169,19 @@ LOGIN_URL = '/accounts/login'
 
 #variable for comments
 SITE_ID = 2
+
+AWS_STORAGE_BUCKET_NAME = 'media-django-shoppingkit'
+AWS_S3_REGION_NAME = 'us-west-2'  # e.g. us-east-2
+AWS_ACCESS_KEY_ID = 'AKIAZHV3NGF25FJ7DZWA'
+AWS_SECRET_ACCESS_KEY = 'kAmAM5bcX1rRfFK+ETMlptZPOJ6xVshWdPg2kT7x'
+
+# Tell django-storages the domain to use to refer to static files.
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+# Tell the staticfiles app to use S3Boto3 storage when writing the collected static files (when
+# you run `collectstatic`).
+STATICFILES_LOCATION = 'static'
+STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+
+MEDIAFILES_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'

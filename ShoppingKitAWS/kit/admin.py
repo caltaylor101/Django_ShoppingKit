@@ -1,4 +1,9 @@
 from django.contrib import admin
 from .models import KitPost
 # Register your models here.
-admin.site.register(KitPost)
+
+
+class KitPostAdmin(admin.ModelAdmin):
+    save_as = True
+
+admin.site.register(KitPost, KitPostAdmin)
